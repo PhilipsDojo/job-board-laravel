@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -64,3 +65,20 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+=======
+# job-board-laravel
+Eine browserbasierte Anwendung zur Verwaltung von Stellenanzeigen.
+## Aufgabenstellung
+- Aufgabe 1: Konzept mit Sitemap, Modellen und Rechten
+- Aufgabe 2: Laravel Installation
+- Aufgabe 3: Modelle, Migrations, Policies
+- Aufgabe 4: CRUD-Ansichten
+    - Jobs: Listenansicht, Detailansicht, Erstellen, Bearbeiten
+    - Companies: Listenansicht, Detailansicht, Erstellen, Bearbeiten
+    - Categories: Listenansicht, Detailansicht, Erstellen, Bearbeiten
+
+## Technologien
+- Laravel
+- MySQL
+- GitHub
+>>>>>>> d921f51ce53e38261b38b188983bc2dee5753307
