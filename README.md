@@ -81,4 +81,3 @@ Eine browserbasierte Anwendung zur Verwaltung von Stellenanzeigen.
 - Laravel
 - MySQL
 - GitHub
->>>>>>> d921f51ce53e38261b38b188983bc2dee5753307
