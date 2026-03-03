@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -78,6 +77,17 @@ Eine browserbasierte Anwendung zur Verwaltung von Stellenanzeigen.
     - Categories: Listenansicht, Detailansicht, Erstellen, Bearbeiten
 
 ## Technologien
-- Laravel
-- MySQL
-- GitHub
+- Laravel 12
+- SQLite (Datenbank)
+- GitHub/ GitHub Desktop
+- VS Code
+- DB Browser for SQLite
+
+## Entwicklung
+- Konzept & Architektur: Vollständig eigenständig erarbeitet (siehe Aufgabe 1)
+- Code-Umsetzung: Eigenhändig programmiert, mit Unterstützung durch (KI) für:
+  - Erklärungen zu Laravel-Konzepten als Brücke zu OOP, Vererbung, Traits sowie Parallelen zu Angular und Java-Namings.
+  - Debugging und Fehleranalyse
+  - Dokumentation der Lernfortschritte
+  - **Kontrolle** der Code Kommentare
+  
