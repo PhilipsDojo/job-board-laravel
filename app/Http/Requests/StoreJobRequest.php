@@ -20,7 +20,7 @@ class StoreJobRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true ; // damit policy prüfung übernehmen kann
     }
 
     /**
@@ -32,8 +32,18 @@ class StoreJobRequest extends FormRequest
      */
     public function rules(): array
     {
+
+    // hier etwas mehr Validierung:
+    //
         return [
-            //
+            'title' => 'required|string|max:255',                    // Pflichtfeld|Text|max255 Zeichen
+            'description' => 'required|string',                      // Pflichtfeld|Text
+            'location' => 'required|string|max:255',                 // Pflichtfeld|Text|max255 Zeichen
+            'is_active' => 'boolean',                                // optional|true/false
+            'expires_at' => 'nullable|date|after:today',             // optional|Datum|muss nach heute liegen
+            'company_id' => 'required|exists:companies,id',          // Pflichtfeld|muss in companies-Tabelle existieren
+            'category_id' => 'required|exists:categories,id',        // Pflichtfeld|muss in categories-Tabelle existieren
+            'user_id' => 'required|exists:users,id',                 // Pflichtfeld|muss in users-Tabelle existieren    //
         ];
     }
 }
