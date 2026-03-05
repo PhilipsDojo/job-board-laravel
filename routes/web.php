@@ -7,6 +7,9 @@ use App\Models\Company;
 use App\Models\Job;
 use App\Models\User;
 use App\Models\Category;
+use App\Http\Controllers\CategoryController;
+
+Route::resource('categories', CategoryController::class);
 
 Route::get('/', function () {
     /* laravel DEMO
