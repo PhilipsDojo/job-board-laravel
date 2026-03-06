@@ -5,12 +5,15 @@
 // Validierung =  prüft: sind die Daten korrekt? 
 // Autorisierung = Policy prüft ob User die Aktion überhaupt durchführen darf
 
+// 2 Methoden erweitert für den BildUpload create und update nähe Infos in den Methoden selbst
+
 namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
+use Illuminate\Support\Facades\Storage; // ←Für Image Upload
 
 class CompanyController extends Controller
 {
@@ -46,8 +49,32 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request)
     {
-        Company::create($request->validated());// NUR validierte Daten speichern
-        return redirect()->route('companies.index'); // Nach Aktion X wird zurück zur liste geleitet im VIEW
+       //   Company::create($request->validated());// NUR validierte Daten speichern
+       //   return redirect()->route('companies.index'); // Nach Aktion X wird zurück zur liste geleitet im VIEW
+
+       // inklusive Bild upload neu:
+       // was passiert hier 
+       //  $request->validated() gibt NUR die Felder zurück, die in StoreCompanyRequest::$rules definiert sind
+       // if prüft: Existiert im Request eine Datei mit dem Feldnamen "logo"?
+       // Gibt true zurück, wenn eine Datei hochgeladen wurde 
+       // $request->file holt die Datei aus dem request herraus und speichert die Infos 
+       // in einem Objekt gespeichert diese erbt von der Klasse Laravel Klasse UploadedFile 
+       // $path generiert eindeutigen Dateinnamen Speichert datei ab gibt den Pfad zurück und via param 'public' wurd der öffentliche Storage-Disk verwendet 
+       // Pfad zum Daten-Array einfügen 
+       // werden keine daten gefunden false dann wird die schleife übersprungen
+       $data = $request->validated();  
+        
+       if($request->hasFile('logo')){  
+        $path = $request->file('logo')->store('logos', 'public'); 
+        $data['logo'] =$path; 
+       }
+
+        // create() nimmt das komplette $data-Array
+        // gibt es einen 'logo'-Eintrag? ja dann wird in DB gespeichert
+        // enthält es keinen? dann  DB bekommt NULL für logo-Spalte
+       Company::create($data); // Speichert mit Bildpfad 
+       return redirect()->route('companies.index'); 
+
     }
 
     /**
@@ -77,14 +104,29 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompanyRequest $request, Company $company)
     {
-        // VALIDIERUNG: Läuft automatisch durch UpdateCompanyRequest
-        // AUTORISIERUNG: Läuft automatisch durch Policy (update)  
+    // VALIDIERUNG: Läuft automatisch durch UpdateCompanyRequest
+    // AUTORISIERUNG: Läuft automatisch durch Policy (update)
 
-        //  Nur die Felder, die im Request validiert wurden werden geupdatet
-        $company->update($request->validated());
-    
-        // Nach erfolgreichem Update: Zur Detailseite der Firma
-        return redirect()->route('companies.show', $company);
+    // ähnlich wie in der create function neue logik für BildUpload:
+    // 1. Validierte Daten holen (Textfelder)
+    // 2. Wurde ein neues Logo hochgeladen?
+    // 3. ALTES Logo löschen (falls vorhanden)
+    // 4. NEUES Logo speichern
+    // 5. Pfad in Daten-Array einfügen
+    $data = $request->validated();
+    if ($request->hasFile('logo')) {           
+        if ($company->logo) {
+            Storage::disk('public')->delete($company->logo);
+        }       
+        $path = $request->file('logo')->store('logos', 'public');               
+        $data['logo'] = $path;
+    }
+
+    // 6. Firma mit allen Daten aktualisieren
+    $company->update($data);
+
+    // 7. Zur Detailseite weiterleiten
+    return redirect()->route('companies.show', $company)->with('success', 'Firma wurde aktualisiert');
     }
 
     /**

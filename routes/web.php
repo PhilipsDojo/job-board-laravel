@@ -8,8 +8,10 @@ use App\Models\Job;
 use App\Models\User;
 use App\Models\Category;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CompanyController;
 
 Route::resource('categories', CategoryController::class);
+Route::resource('companies', CompanyController::class);
 
 Route::get('/', function () {
     /* laravel DEMO
