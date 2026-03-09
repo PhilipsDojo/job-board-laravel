@@ -9,9 +9,11 @@ use App\Models\User;
 use App\Models\Category;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\JobController;
 
 Route::resource('categories', CategoryController::class);
 Route::resource('companies', CompanyController::class);
+Route::resource('jobs', JobController::class);
 
 Route::get('/', function () {
     /* laravel DEMO

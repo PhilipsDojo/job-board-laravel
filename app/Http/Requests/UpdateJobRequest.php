@@ -41,8 +41,8 @@ class UpdateJobRequest extends FormRequest
             'title' => 'sometimes|string|max:255',           
             'description' => 'sometimes|string',              
             'location' => 'sometimes|string|max:255',         
-            'is_active' => 'sometimes|boolean',                
-            'expires_at' => 'sometimes|nullable|date|after:today', 
+            'is_active' => 'sometimes|boolean',                 
+            'expires_at' => 'sometimes|nullable|date',  // after:today entfernt. So können Jobs auf Deadlines in vergangenheit gesetzt werden.
             'company_id' => 'sometimes|exists:companies,id',   
             'category_id' => 'sometimes|exists:categories,id', 
             'user_id' => 'sometimes|exists:users,id',         

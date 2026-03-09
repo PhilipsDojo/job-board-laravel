@@ -45,23 +45,29 @@
     <div class="container">
         <h1>Jobbörse Dashboard</h1>
 
-        <div class="grid">
+        <div class="grid"> <!-- new grid Start --> 
             <!-- Kategorien -->
             <div class="card">
                 <h2>Kategorien</h2>
                 <div class="count">{{ $categories->count() }}</div>
                 <a href="{{ route('categories.index') }}">Ansehen</a>
-        </div>
-        </div>
-            <!-- Firmen -->
-        <div class="grid">
+            </div>
+       
+            <!-- Jobs -->           
+            <div class="card">
+                <h2>Jobs</h2>
+                <div class="count">{{ $jobs->count() }}</div>
+                <a href="{{ route('jobs.index') }}">Ansehen</a>
+            </div>
+        
+            <!-- Firmen -->       
             <div class="card">
                 <h2>Firmen</h2>
                 <div class="count">{{ $companies->count() }}</div>
                 <a href="{{ route('companies.index') }}">Ansehen</a>
             </div>
         </div>
-    </div>
+    </div> <!-- new grid End --> 
 </body>
 
 </html>

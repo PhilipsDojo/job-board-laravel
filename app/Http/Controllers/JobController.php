@@ -19,7 +19,8 @@ class JobController extends Controller
      */
     public function index()
     {
-        //
+        $jobs = Job::with(['company', 'category'])->get();
+        return view('jobs.index', compact('jobs'));
     }
 
     /**
@@ -27,7 +28,7 @@ class JobController extends Controller
      */
     public function create()
     {
-        //
+      return view('jobs.create');
     }
 
     /**
@@ -35,7 +36,8 @@ class JobController extends Controller
      */
     public function store(StoreJobRequest $request)
     {
-        //
+        Job::create($request->validated());
+        return redirect()->route('jobs.index')->with('success', 'Job wurde erstellt!'); 
     }
 
     /**
@@ -43,7 +45,7 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        //
+        return view('jobs.show', compact('job'));
     }
 
     /**
@@ -51,7 +53,7 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
-        //
+       return view('jobs.edit', compact('job')); 
     }
 
     /**
@@ -59,7 +61,18 @@ class JobController extends Controller
      */
     public function update(UpdateJobRequest $request, Job $job)
     {
-        //
+        // debugging Zeigt alle gesendeten Daten wenn Formular abgeschickt wird 
+        // dd($request->all()); 
+
+        // Automatische Prüfung: Wenn Ablaufdatum auf die Vergangenheit gesetzt wird, Job inaktiv setzen
+        $data = $request->validated();
+        if (isset($data['expires_at']) && \Carbon\Carbon::parse($data['expires_at'])->isPast()) {
+        $data['is_active'] = false;
+        }
+        $job->update($data);
+
+    return redirect()->route('jobs.index')->with('success', 'Job wurde aktualisiert!');
+
     }
 
     /**
@@ -67,6 +80,7 @@ class JobController extends Controller
      */
     public function destroy(Job $job)
     {
-        //
+        $job->delete();
+        return redirect()->route('jobs.index')->with('success', 'Job wurde gelöscht!'); 
     }
 }
