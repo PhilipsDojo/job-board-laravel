@@ -10,10 +10,12 @@ use App\Models\Category;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\UserController;
 
 Route::resource('categories', CategoryController::class);
 Route::resource('companies', CompanyController::class);
 Route::resource('jobs', JobController::class);
+Route::resource('user', UserController::class);
 
 Route::get('/', function () {
     /* laravel DEMO
@@ -23,10 +25,10 @@ Route::get('/', function () {
     // hole alle Daten aus den bestehenden Models
     $companies = Company::all();
     $jobs = Job::all();
-    $users = User::all();
+    $user = User::all();
     $categories = Category::all();
 
     // gib die Daten in den View:
-    return view('welcome', compact('companies', 'jobs', 'users','categories'));
+    return view('welcome', compact('companies', 'jobs', 'user','categories'));
     
 });

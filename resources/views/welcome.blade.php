@@ -66,6 +66,13 @@
                 <div class="count">{{ $companies->count() }}</div>
                 <a href="{{ route('companies.index') }}">Ansehen</a>
             </div>
+
+            <!-- User --> 
+            <div class="card">
+                <h2>User</h2>
+                <div class="count">{{ $user->count() }}</div>
+                <a href="{{ route('user.index') }}">Ansehen</a>
+            </div>
         </div>
     </div> <!-- new grid End --> 
 </body>
