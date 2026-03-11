@@ -18,18 +18,20 @@ class JobPolicy
 {
     /**
      * Determine whether the user can view any models.
+     * Gäste haben den wert "null" somit aus function param angepasst (User $user) -> (?User $user)
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
-        return false;
+        return true; // auch Gäste dürfen Jobs sehen
     }
 
     /**
      * Determine whether the user can view the model.
+     * Gäste haben den wert "null" somit aus function param angepasst (User $user) -> (?User $user)
      */
-    public function view(User $user, Job $job): bool
+    public function view(?User $user, Job $job): bool
     {
-        return false;
+        return true; // auch Gäste dürfen Job details einsehen
     }
 
     /**
@@ -37,23 +39,26 @@ class JobPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === 'arbeitgeber' || $user->role === 'admin'; // nur arbeitgeber dürfen Job erstellen ODER ADMIN
     }
 
     /**
      * Determine whether the user can update the model.
+     * Darf bearbeitet werden wenn, der eingeloggte User der ersteller ist ODER ADMIN
+     * So die theorie
      */
     public function update(User $user, Job $job): bool
     {
-        return false;
+        return $user->id === $job->user_id || $user->role === 'admin';
     }
 
     /**
      * Determine whether the user can delete the model.
+     * Darf bearbeitet werden wenn, der eingeloggte User der ersteller ist ODER ADMIN
      */
     public function delete(User $user, Job $job): bool
     {
-        return false;
+       return $user->id === $job->user_id || $user->role === 'admin';
     }
 
     /**
@@ -61,7 +66,7 @@ class JobPolicy
      */
     public function restore(User $user, Job $job): bool
     {
-        return false;
+        return $user ->role === 'admin'; // nur admins
     }
 
     /**
@@ -69,6 +74,13 @@ class JobPolicy
      */
     public function forceDelete(User $user, Job $job): bool
     {
-        return false;
+        return $user ->role === 'admin'; // nur admins
     }
 }
+
+
+/**
+ * Merksatz PHP:
+ * (User $user) ===  $user MUSS ein user Objekt sein - kein Gast. View würde somit nicht aufgerufen werden. 
+ * (?User $user) === $user KANN User oder null sein ( Gast erlaubt )
+ */

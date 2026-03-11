@@ -7,14 +7,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Hash;   // import Laravels Interface für Bcrypt Verschlüsselung ( PW beispielsweise nicht als Klartext in DB speichern)
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('viewAny', User::class);
         $user = User::all();
         return view('user.index', compact('user'));
     }
@@ -24,6 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
         return view('user.create');
     }
 
@@ -32,6 +36,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        $this->authorize('create', User::class);
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']); // Passwort hashen
 
@@ -44,7 +49,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-         return view('user.show', compact('user'));
+        $this->authorize('view', $user);
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -52,6 +58,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('user.edit', compact('user'));
     }
 
@@ -60,6 +67,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $this->authorize('update', $user);
         $data = $request->validated();
 
         if (!empty($data['password'])) {
@@ -78,7 +86,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-                $user->delete();
+        $this->authorize('delete', $user);
+        $user->delete();
         return redirect()->route('user.index')->with('success', 'Benutzer gelöscht.');
     }
 }

@@ -14,9 +14,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use Illuminate\Support\Facades\Storage; // ←Für Image Upload
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests; // für authorize traits
 
 class CompanyController extends Controller
 {
+    use AuthorizesRequests; // use traits
     /**
      * Display a listing of the resource.
      * zeige ALLE Firmen an ( listenansicht)
@@ -24,6 +26,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
+        
+        $this->authorize('viewAny', Company::class);
         $companies = Company::all();
         // $companies speicher die variable 
         // Company die KLASSE/Bauplan 
@@ -39,6 +43,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Company::class);
         return view('companies.create');//
     }
 
@@ -62,6 +67,7 @@ class CompanyController extends Controller
        // $path generiert eindeutigen Dateinnamen Speichert datei ab gibt den Pfad zurück und via param 'public' wurd der öffentliche Storage-Disk verwendet 
        // Pfad zum Daten-Array einfügen 
        // werden keine daten gefunden false dann wird die schleife übersprungen
+       $this->authorize('create', Company::class);
        $data = $request->validated();  
         
        if($request->hasFile('logo')){  
@@ -84,6 +90,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
+     $this->authorize('view', $company); // prüft hier die konkrete Firma nicht die objekt class
      return view('companies.show', compact('company'));  // compact ist eine PHP Funktion die aus einer Variable ein Array macht.
     }
 
@@ -92,8 +99,9 @@ class CompanyController extends Controller
      * Zeigt das Bearbeitungs-Formular für eine Firma
      * route: GET /companies/{company}/edit
      */
-    public function edit(Company $company)
+    public function edit(Company $company) // prüft hier die konkrete Firma nicht die objekt class
     {
+        $this->authorize('update', $company); 
         return view('companies.edit', compact('company'));// AUTORISIERUNG: Läuft automatisch durch Policy (update)
     }
 
@@ -113,6 +121,7 @@ class CompanyController extends Controller
     // 3. ALTES Logo löschen (falls vorhanden)
     // 4. NEUES Logo speichern
     // 5. Pfad in Daten-Array einfügen
+    $this->authorize('update', $company);
     $data = $request->validated();
     if ($request->hasFile('logo')) {           
         if ($company->logo) {
@@ -134,6 +143,11 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
+    $this->authorize('delete', $company);
+
+        if($company->logo){
+            Storage::disk('public')->delete($company->logo); // löscht das Logo mit vom Storage
+        }
         // Firma aus der Datenbank löschen
         // AUTORISIERUNG: Läuft automatisch durch Policy (delete)
     $company->delete();

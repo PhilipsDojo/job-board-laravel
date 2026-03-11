@@ -20,7 +20,7 @@ class CompanyPolicy
      * Darf User als Gast(null) alle Firmen sehen ?.
      * 
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
         return true; // true. Jeder darf Firmen sehen (auch Gäste(null))
     }
@@ -28,11 +28,12 @@ class CompanyPolicy
     /**
      * Determine whether the user can view the model.
      * Prüft, ob der User $user (z.B. Max) die Firma $company (z.B. Google) sehen darf
-    *  true = darf er, false = darf er nicht
+     * true = darf er, false = darf er nicht
+    
      */
-    public function view(User $user, Company $company): bool
+    public function view(?User $user, Company $company): bool
     {
-        return true; // eingeloggte user dürfen das.
+        return true; // true. Jeder darf Firmendetails sehen (auch Gäste(null))
     }
 
     /**

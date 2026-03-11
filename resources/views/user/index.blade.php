@@ -32,17 +32,17 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($user as $user)
+        @foreach($user as $singleUser)   <!-- Naming geändert für sicherere Iteration -->
             <tr>
-                <td>{{ $user->id }}</td>
-                <td>{{ $user->name }}</td>
-                <td>{{ $user->email }}</td>
-                <td>{{ $user->role ?? 'bewerber' }}</td>
-                <td>{{ $user->company_id ?? '—' }}</td>
+                <td>{{ $singleUser->id }}</td>
+                <td>{{ $singleUser->name }}</td>
+                <td>{{ $singleUser->email }}</td>
+                <td>{{ $singleUser->role ?? 'bewerber' }}</td>
+                <td>{{ $singleUser->company_id ?? '—' }}</td>
                 <td>
-                    <a href="{{ route('user.show', $user) }}">Ansehen</a>
-                    <a href="{{ route('user.edit', $user) }}">Bearbeiten</a>
-                    <form action="{{ route('user.destroy', $user) }}" method="POST" style="display:inline;">
+                    <a href="{{ route('user.show', $singleUser) }}">Ansehen</a>
+                    <a href="{{ route('user.edit', $singleUser) }}">Bearbeiten</a>
+                    <form action="{{ route('user.destroy', $singleUser) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" onclick="return confirm('Wirklich löschen?')">Löschen</button>
